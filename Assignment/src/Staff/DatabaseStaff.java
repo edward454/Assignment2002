@@ -42,7 +42,7 @@ public class DatabaseStaff implements Database{
 
 
 	@Override
-	public ArrayList<Object> ReadFromDatabase(String filename) {
+	public ArrayList<Staff> ReadFromDatabase(String filename) {
 		ArrayList returnedList = null;
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
