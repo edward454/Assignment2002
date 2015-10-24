@@ -4,18 +4,13 @@ import java.util.Date;
 public class Ticket{
 	private double price;
 	private String seatno;
-	private DateMovie datemovie;
-	private String movieName;
+	private Date time = new Date();
+	private Movie mov;
 	
-	public Ticket(String movieName, String seatno , DateMovie datemovie,double price){
-		this.movieName = movieName;
-		this.seatno = seatno;
-		this.datemovie = datemovie;
+	public Ticket(double price){
 		this.price = price;
 	}
 	
-	
-	//ticket price will be dynamically change based on the movie that was shown 
 	public void setPrice(double price){
 		this.price = price;
 	}
@@ -32,21 +27,13 @@ public class Ticket{
 		return seatno;
 	}
 	
-	public void setDateMovie(DateMovie date){
-		
+	public void setTime(Date time){
+		this.time = time;
 	}
 	
-	public DateMovie getDateMovie(){
-		return this.datemovie; 
+	public Date getTime(){
+		return time;
 	}
 	
-	public void setMovieTitle(String titleMovie){
-		this.movieName = titleMovie;
-	}
-	
-	public String getTitleMovie(){
-		return movieName;
-	}
-
 	
 }

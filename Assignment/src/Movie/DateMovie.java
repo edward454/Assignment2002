@@ -60,7 +60,7 @@ public class DateMovie implements Serializable,Comparable<DateMovie>{
 	}
 	
 	public String getStatusTimeMovie(){
-		String timeStatus = year+"/"+month+"/"+day+" "+hour+":"+minute+"  "+statusMovie;
+		String timeStatus = year+"/"+month+"/"+day+" "+hour+":"+minute+"  "+statusMovie+" at "+cinema.getCinemaName();
 		return timeStatus;
 	}
 	

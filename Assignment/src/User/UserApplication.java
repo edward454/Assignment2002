@@ -1,6 +1,5 @@
 package User;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,28 +7,19 @@ import Cinema.Cinema;
 import Cineplex.Cineplex;
 import Cineplex.CineplexDatabase;
 
-
-
-public class UserApplication implements Serializable{
-	
-	private static final int MAIN_MENU = 0;
-	private static final int CINEPLEX_INTERFACE = 1;
-	private static final int BOOKING_INTERFACE = 3;
+public class UserApplication {
 	
 	private static CineplexDatabase userDatabase =  new CineplexDatabase();	
 	private static ArrayList <Cineplex> listCineplex = userDatabase.ReadFromDatabase("CineplexDatabase.dat");
 	private static Scanner sc = new Scanner(System.in);			
-	private static ArrayList <Cinema> listCinema = new ArrayList<Cinema>();
+	private static ArrayList <Cinema> listCinema = null;
 	private static Cineplex currentCineplex = new Cineplex();
-	private static Customer customer;
-	
+	/*
 	public static void main(String[] args) {			
 		
-		boolean carryOn = true;
-		
-		while(carryOn){
+		while(true){
 			
-			int option = requestInput(MAIN_MENU);
+			int option = requestInputListMovie(0);
 			
 			System.out.flush();
 			
@@ -51,76 +41,60 @@ public class UserApplication implements Serializable{
 					String searchMovie = "";
 					
 					System.out.println("Enter movie title: ");
-					
-					sc.nextLine();
-					searchMovie = sc.nextLine();
-					System.out.flush();
-					for (int i = 0; i < listCineplex.size(); i++){
+					if(sc.hasNext()){
 						
-						searchResult = searchCineplex(searchMovie, listCineplex.get(i));
-						if (searchResult.size() == 0){
+						System.out.flush();
+						searchMovie = sc.next();
+						System.out.flush();
+						for (int i = 0; i < listCineplex.size(); i++){
 							
-							System.out.println(listCineplex.get(i).getCineplexName() + ":  No movie to show. \n");
-							
-						}
-						else{
-							
-							for(int j = 0; j < searchResult.size(); j++){
+							searchResult = searchCineplex(searchMovie, listCineplex.get(i));
+							if (searchResult.size() == 0){
 								
-								System.out.println(searchResult.get(j));
+								System.out.println(listCineplex.get(i).getCineplexName() + ":  No movie to show. \n");
+								
+							}
+							else{
+								
+								for(int j = 0; j < 200; i++){
+									
+									if (searchResult.get(j) != null)
+										System.out.println(searchResult.get(j));
+									else 
+										break;
+									
+								}
 								
 							}
 							
 						}
-						System.out.println("");
 						
 					}
 					
 					break;
-					
-				case 4:	
-					int choice = 0;
-					requestInput(BOOKING_INTERFACE);
-					if (customer.confirmCustomerInfo())
-						choice = requestInput(CINEPLEX_INTERFACE);
-					
-					switch(choice){
-						case 1: 
-							
-					
-					}
-					
-					
-				case 6:
-					carryOn = false;
-					break;
-
+		
 			}
 			
 		}
 		
-		System.out.println("Exiting... thank you for visiting.");
 		
 	}
 	
-	private static int requestInput(int userInterface){
+	private static int requestInputListMovie(int type){
 		
-		switch(userInterface){
+		switch(type){
 		
-			case MAIN_MENU: 
+			case 0: 
 				System.out.println("Choose one option:\n"
 						+ "1) List the movies available\n"
 						+ "2) List the movies with details\n"
-						+ "3) Search for movies\n"
-						+ "4) Book ticket\n"
-						+ "5) Rate a movie\n"
-						+ "6) Exit\n");
-										
+						+ "3) Search for movies\n");
+				
 				if (sc.hasNextInt()){
 					
 					int choice = sc.nextInt();
 					
-					while (choice >= 7){
+					while (choice >= 4){
 						
 						System.out.println("Invalid Option, choose again: ");
 						choice = sc.nextInt();
@@ -130,7 +104,7 @@ public class UserApplication implements Serializable{
 					
 				}
 
-			case CINEPLEX_INTERFACE:
+			case 1:
 				System.out.println("Choose cineplex:");
 				
 				for (int i = 0; i < listCineplex.size(); i++)
@@ -161,7 +135,7 @@ public class UserApplication implements Serializable{
 				for (int i = 0; i < listCinema.size(); i++){
 				
 					System.out.printf("%d) ", i + 1);
-					System.out.println(listCinema.get(i).getNameCinema());
+		//	System.out.println(listCinema.get(i).getNameCinema());
 				
 				}
 				if (sc.hasNextInt()){
@@ -175,86 +149,50 @@ public class UserApplication implements Serializable{
 					return choice;
 					
 				}
-				
-			case BOOKING_INTERFACE:
-				String customerEmailAdd;
-				System.out.println("Please enter your name: ");
-				String customerName = sc.next();				
-				System.out.println("Please enter your phone number: ");
-				int customerPhoneNumber = sc.nextInt();
-				System.out.println("Please enter your e-mail address: ");
-				do{					
-					
-					customerEmailAdd = sc.next();
-					
-					if(validateEmailAdd(customerEmailAdd) == false)						
-						System.out.println("Invalid email address, enter again: ");						
-					
-					else
-						break;
-					
-				}while (true);
-				customer = new Customer(customerName, customerPhoneNumber, customerEmailAdd);
-				return 0;
-					
+			
 			default: return 0;
 				
 		}
 		
 	}
 	
+	
 	private static void listMovies(boolean withDetails){
 		
-		int cineplexChoice = requestInput(CINEPLEX_INTERFACE);	
+		int cineplexChoice = requestInputListMovie(1);						
 		
-		for(int i = 0; i < listCineplex.size(); i++){
-			System.out.println("I am here 1");
-//			currentCineplex = listCineplex.get(i);
-			System.out.println(listCineplex.get(i).getCineplexName());
-			System.out.println("I am here 2");
-			listCinema.add(listCineplex.get(i).getCinema(i));
-		}
-		System.out.println("I am here 3");
-//		int cinemaChoice = requestInput(2);							
-		int movieArraySize = 0;
-		for (int i = 0; i < listCinema.size(); i++){
-			movieArraySize += listCinema.get(i).getArrayMovie().size();
-		}
-		
-		System.out.println(movieArraySize);
-		try{
-			if (movieArraySize != 0){
-				
-				for(int i = 0; i < listCinema.size(); i++){
-					for (int j = 0; j < movieArraySize; j++){
-						if (!withDetails){
-							System.out.printf("%d) ", i + 1);
-							System.out.println(listCinema.get(i).getArrayMovie().get(j).getTitle());
-						}
-						else{
-							System.out.printf("%d) ", i + 1);
-							System.out.println(listCinema.get(i).getArrayMovie().get(j).printDescription());
-						}
-					}
-					
-				}
-				System.out.println("");
+		currentCineplex = listCineplex.get(cineplexChoice - 1);
+		listCinema = currentCineplex.getListCinema();
+	
+		int cinemaChoice = requestInputListMovie(2);							
+	
+	//	int movieArraySize = listCinema.get(cinemaChoice - 1).getArrayMovie().size();
+		if (movieArraySize != 0){
+			
+			for(int i = 0; i < movieArraySize; i++){
+				if (!withDetails)
+					System.out.println(listCinema.get(cinemaChoice - 1).getArrayMovie().get(i).getTitle());
+				else
+					System.out.println(listCinema.get(cinemaChoice - 1).getArrayMovie().get(i).printDescription());
 				
 			}
-			else{
-				
-				System.out.println("No movie is available\n");						
-				
-			}
-		}catch (Exception e){
+			System.out.println("");
+			
+		}
+		else{
+			
+			System.out.println("No movie is available\n");						
 			
 		}
 		
 	}
 	
+	//this is not working
 	private static ArrayList<String> searchCineplex(String title, Cineplex cineplex){
 		
 		ArrayList<String> result = new ArrayList<String>();
+		
+		cineplex = new Cineplex();
 		
 		listCinema = cineplex.getListCinema();
 		
@@ -264,26 +202,20 @@ public class UserApplication implements Serializable{
 				
 				if((listCinema.get(i).getArrayMovie().get(j).getTitle()).compareTo(title) == 0){
 					
-					result.add(cineplex.getCineplexName() + ":  " + listCinema.get(i).getNameCinema() + "\t" + title);
+					result.add(cineplex.getCineplexName() + " "+ listCinema.get(i).getNameCinema() + title);
+					System.out.println(result.get(0));
+					System.out.println(result.size());
 					
 				}
 				
 			}
 			
-		}		
+		}
+		
+		System.out.println(result.size());
 		
 		return result;
 		
 	}
-	
-	private static boolean validateEmailAdd(String email){
-		
-		String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
-        java.util.regex.Matcher m = p.matcher(email);
-        return m.matches();
-		
-	}
-
-
+	*/
 }

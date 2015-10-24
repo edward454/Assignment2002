@@ -17,6 +17,26 @@ public class Movie implements Serializable{
 	private String synopsis = "";
 	private ArrayList<DateMovie> scheduleMovie = new ArrayList<DateMovie>();
 	
+	
+	public static void main(String args[]){
+		Movie movie = new Movie();
+		movie.setSynopsis("Twelve people have walked on the moon, but only one man has ever, or will ever, walk in"
+				+ " the immense void between the World Trade Center towers."
+				+ " Guided by his real-life mentor, Papa Rudy (Ben Kingsley), and aided "
+				+ "by an unlikely band of international recruits,"
+				+ " Petit and his gang overcome long odds, betrayals, dissension and "
+				+ "countless close calls to conceive and execute their mad plan.");
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("first");
+		list.add("second");
+		movie.setCastList(list);
+		System.out.println(movie.printSynopsis());
+		System.out.println(movie.printCast());
+	}
+	public Movie(){
+		
+	}
+	
 	public Movie(String title, String duration , String ratingPG , String genre,
 			DateMovie datemovie,double price,String director,ArrayList<String> listCast,String synopsis){
 		this.title = title;
@@ -49,6 +69,27 @@ public class Movie implements Serializable{
 		return synopsis;
 	}
 	
+	public String printSynopsis(){
+		StringBuilder strBuild = new StringBuilder();
+		boolean pass = false;
+		int counter = 0;
+		for(int i = 0 ; i < synopsis.length() ; i++){
+			if(i > 20 && i % 30 < 10 && synopsis.charAt(i) == ' ' && counter == 0){
+				strBuild.append("\n");
+				pass = true;
+			}
+			if(pass){
+				counter++;
+			}
+			if(counter > 10){
+				counter = 0;
+				pass  = false;
+			}
+			strBuild.append(synopsis.charAt(i));
+		}
+		return  strBuild.toString();
+	}
+	
 	
 	//getter and setter for cast
 	
@@ -58,6 +99,15 @@ public class Movie implements Serializable{
 	
 	public ArrayList<String> getCastList(){	
 		return castList;
+	}
+	
+	public String printCast(){
+		String cast ="";
+		for(int i = 0 ; i < castList.size() ; i++){
+			cast+=i+1+") ";
+			cast+= castList.get(i)+"\n"; 
+		}
+		return cast;
 	}
 	
 	//add cast to the castList
@@ -162,17 +212,20 @@ public class Movie implements Serializable{
 		}
 		for(int i = 0 ; i < scheduleMovie.size() ;i++){
 			String statusTime = scheduleMovie.get(i).getStatusTimeMovie();
-			System.out.printf("%d) %s",i+1,statusTime);
+			System.out.printf("%d) %s\n",i+1,statusTime);
 		}
 	}
 	
-
+	//without rating
 	public String printDescription(){
 		String movieDescription = "Title Movie: "+this.title+"\n"
 								   +"Duration: "+this.duration+ "\n"
 								   +"RatingPG: "+this.ratingPG+"\n"
 								   +"Genre: "+this.genre+"\n"
 								   +"Price: "+this.price+"\n"
+								   +"Director: "+this.director+"\n"
+								   +"cast: \n"+printCast()+"\n"
+								   +"Synopsis: \n"+printSynopsis()+"\n"
 								   +"Schedule Movie: \n\n";
 		String listTime = "";
 		//to display the schedule first we are going to sorted the schedule first 
@@ -210,12 +263,16 @@ public class Movie implements Serializable{
 		return movieDescription;
 	}
 	
+	//with rating
 	public String printFullDescription(){
 		String movieDescription = "Title Movie: "+this.title+"\n"
 						   +"Duration: "+this.duration+ "\n"
 						   +"RatingPG: "+this.ratingPG+"\n"
 						   +"Genre: "+this.genre+"\n"
 						   +"Price: "+this.price+"\n"
+						   +"Director: "+this.director+"\n"
+						   +"cast: "+printCast()+"\n"
+						   +"Synopsis: "+printSynopsis()+"\n"
 						   +"Schedule Movie: \n\n";
 		String listTime = "";
 		//to display the schedule first we are going to sorted the schedule first 
