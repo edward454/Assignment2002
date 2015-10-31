@@ -2,6 +2,7 @@ package User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import Cinema.Cinema;
@@ -20,6 +21,8 @@ public class UserApplication implements Serializable{
 	private static final int BOOKING_MAIN_INTERFACE = 3;
 	private static final int RATING_INTERFACE = 4;
 	private static final int SELECT_TIMING_INTERFACE = 5;
+	private static final int SELECT_AGE_GROUP_INTERFACE = 6;
+	private static final int SELECT_SEAT = 7;
 	
 	private static CineplexDatabase userDatabase =  new CineplexDatabase();	
 	private static ArrayList <Cineplex> cineplexList = userDatabase.readFromDatabase("CineplexDatabase.dat");
@@ -27,6 +30,7 @@ public class UserApplication implements Serializable{
 	private static ArrayList <Movie> movieList = new ArrayList<Movie>();
 	private static Customer customer;
 	private static ArrayList<DateMovie> movieScheduleList = new ArrayList<DateMovie>();
+	private static Movie movieChosen = new Movie();
 	
 	public static void main(String[] args) {			
 		
@@ -85,25 +89,40 @@ public class UserApplication implements Serializable{
 					
 				case 4:	
 					int cineplexChoice = 0;
-					//requestInput(BOOKING_MAIN_INTERFACE);
-					//if (customer.confirmCustomerInfo())
+					requestInput(BOOKING_MAIN_INTERFACE);
+					if (customer.confirmCustomerInfo())
 						cineplexChoice = requestInput(CINEPLEX_INTERFACE);
 						
 					movieList = cineplexList.get(cineplexChoice - 1).getMovieList();
 					
-					int movieChoice = requestInput(MOVIE_INTERFACE);
+					int movieChoice = requestInput(MOVIE_INTERFACE);					
 					
-					movieScheduleList = movieList.get(movieChoice - 1).getArrayListOfDateMovie();
+					movieChosen = movieList.get(movieChoice - 1);
+					
+					movieScheduleList = movieChosen.getArrayListOfDateMovie();
 					
 					int timingChoice = requestInput(SELECT_TIMING_INTERFACE);			
 					
+					int ageGroup = requestInput(SELECT_AGE_GROUP_INTERFACE);
+					
+					double ticketPrice = movieChosen.getPrice(ageGroup);				
+					
+					requestInput(SELECT_SEAT);		
+					
+					System.out.println("Ticket price is SGD " + ticketPrice + "."
+							+ " Proceed to payment? (y / n)");
+					
+					String confirmation = sc.next();
+					
+					if(confirmation.equals("y") || confirmation.equals("Y"))
+						displayTicket(timingChoice);
 					
 					
-							
 					break;
-					
+				
 				case 5:
-					
+					System.out.println("Select a movie to rate: ");
+					requestInput(MOVIE_INTERFACE);
 					
 					
 				case 6:
@@ -115,6 +134,18 @@ public class UserApplication implements Serializable{
 		}		
 		
 	}	
+	
+	private static void displayTicket(int timingChoice) {
+			
+		System.out.println("Transaction ID: " + customer.getTransactionId());		
+		System.out.println("Your seat: " + customer.getSeat());
+		System.out.println("Showing cinema: " + movieChosen.getArrayListOfDateMovie().get(0).getCinema().getCinemaName());
+		System.out.println("Showing time: " + movieScheduleList.get(timingChoice - 1).getTime());
+		System.out.println();
+		System.out.println();
+		
+	}
+
 	private static int requestInput(int userInterface){
 		
 		switch(userInterface){
@@ -248,6 +279,51 @@ public class UserApplication implements Serializable{
 					
 				}
 				
+			case SELECT_AGE_GROUP_INTERFACE:
+				System.out.println("Select your age group:");
+				
+				System.out.println("1) Child (12 and below)"
+						+ "\n2) Adult (13-64)"
+						+ "\n3) Senior Citizen (65 and above)");			
+				
+				
+				if (sc.hasNextInt()){
+					
+					int choice = sc.nextInt();
+					while (choice >= 4){
+						
+						System.out.println("Invalid Option, choose again: ");
+						choice = sc.nextInt();
+					}
+					return choice;
+					
+				}				
+				
+			case SELECT_SEAT:
+				Cinema showingCinema = movieChosen.getArrayListOfDateMovie().get(0).getCinema();
+				System.out.println(showingCinema.getSeatArrangement());
+				System.out.println("Select seat from cinema layout above: ");
+				System.out.print("Row (A - J): ");
+				String row = sc.next();
+				System.out.print("Column (1 - 10): ");
+				int column = sc.nextInt();
+				
+				while(!showingCinema.requestSeat(row, column)){
+					
+					System.out.println("Seat taken, please select again");
+					System.out.print("Row (A - J): ");
+					row = sc.next();
+					System.out.print("Column (1 - 10): ");
+					column = sc.nextInt();
+					
+				}
+				
+				System.out.println("Successfully booked!");				
+				
+				customer.assignSeat(row + Integer.toString(column));
+				
+				return 0;
+				
 			default: return 0;
 				
 		}
@@ -291,7 +367,7 @@ public class UserApplication implements Serializable{
 				
 				result.add(cineplex.getCineplexName() + ":  " 
 						+ "\n" + curMovie.getTitle() 
-						+ "\nPrice: " + Double.toString(curMovie.getPrice())
+						+ "\nPrice: " + Double.toString(curMovie.getPrice(0))
 						+ "\nDuration: " + curMovie.getDuration());
 				
 			}
@@ -310,5 +386,5 @@ public class UserApplication implements Serializable{
         return m.matches();
 		
 	}
-	
+		
 }
