@@ -11,11 +11,11 @@ import Movie.Movie;
 
 public class Cineplex implements Serializable{
 	
-	private String nameCineplex="";
-	private int sizeCinema = 0;
-	private ArrayList<Cinema> listCinema = new ArrayList<Cinema>();
+	private String cineplexName="";
+	private int cinemaSize = 0;
+	private ArrayList<Cinema> cinemaList = new ArrayList<Cinema>();
 	public ArrayList<DateMovie> holidayList = new ArrayList<DateMovie>();
-	private ArrayList<Movie> listMovie = new ArrayList<Movie>();
+	private ArrayList<Movie> movieList = new ArrayList<Movie>();
 
 	//constructor
 	
@@ -23,59 +23,83 @@ public class Cineplex implements Serializable{
 		
 	}
 	
-	public Cineplex(String nameCineplex){
-		this.nameCineplex = nameCineplex;
+	public Cineplex(String cineplexName){
+		this.cineplexName = cineplexName;
 	}
 	
 	//end of constructor
 	
 	
 	//add and remove  movie 
-	public void AddMovie(Movie movie){
-		listMovie.add(movie);
+	public void addMovie(Movie movie){
+		movieList.add(movie);
 	}
 	
-	public ArrayList<Movie> getListMovie(){
-		return listMovie;
+	public ArrayList<Movie> getMovieList(){
+		return movieList;
 	}
 	
 	public Movie getMovie(int index){
-		return listMovie.get(index);
+		return movieList.get(index);
 	}
 	
-	public void RemoveMovie(Movie movie){
-		listMovie.remove(movie);
+	public void removeMovie(Movie movie){
+		movieList.remove(movie);
 	}
 	//end of add and remove movie
 	
 	
 	
 	public String getCineplexName(){
-		return nameCineplex;
+		return cineplexName;
 	}
 	
-	public ArrayList<Cinema> getListCinema(){
-		return listCinema;
+	public ArrayList<Cinema> getCinemaList(){
+		return cinemaList;
 	}
 	
 	
 	public void addCinema(Cinema cinema){
-		listCinema.add(cinema);
+		cinemaList.add(cinema);
 	}
 	
 	public Cinema getCinema(int index){
-		return listCinema.get(index);
+		return cinemaList.get(index);
 	}
 	
 	public void RemoveCinema(Cinema cinema){
-		for(int i = 0 ; i < listCinema.size() ; i++){
-			if(listCinema.get(i).equals(cinema)) {
-				listCinema.remove(i);
+		for(int i = 0 ; i < cinemaList.size() ; i++){
+			if(cinemaList.get(i).equals(cinema)) {
+				cinemaList.remove(i);
 				break;
 			}
 		}
 	}
 	
-	
+	public void listMovie(boolean withDetails){
+		
+		if(movieList.size() == 0) return;
+		
+		if (withDetails){
+			
+			for (int i = 0; i < movieList.size(); i++){
+				
+				System.out.println(movieList.get(i).printDescription());
+				
+			}
+			
+		}
+		else{
+			
+			for (int i = 0; i < movieList.size(); i++){
+				
+				System.out.printf("%d) ", i + 1);
+				System.out.println(movieList.get(i).getTitle());
+				
+			}
+			
+		}	
+		
+	}
 	
 }
