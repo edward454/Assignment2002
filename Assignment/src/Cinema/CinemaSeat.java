@@ -8,6 +8,13 @@ public class CinemaSeat implements Serializable {
 	private boolean occupied;	
 	private int customerId;		
 	
+	public CinemaSeat(int row, int column){
+		
+		this.row = row;
+		this.column = column;
+		
+	}
+	
 	public CinemaSeat(int row, int column, boolean occupied){
 		
 		this.row = row;
@@ -25,7 +32,7 @@ public class CinemaSeat implements Serializable {
 	
 	public String getSeatId(){
 		
-		return row + Integer.toString(column) + occupied;
+		return this.getRow() + Integer.toString(column);
 		
 	}
 	
@@ -69,6 +76,12 @@ public class CinemaSeat implements Serializable {
 	public void freeSeat(){
 		
 		occupied = false;
+		
+	}
+	
+	public void setOccupied (boolean occupied){
+		
+		this.occupied = occupied;
 		
 	}
 	
