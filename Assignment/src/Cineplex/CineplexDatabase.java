@@ -18,10 +18,6 @@ import Movie.Movie;
 //configure the initial database value from the Main method
 
 public class CineplexDatabase implements Database{
-
-	private static Cineplex cathay;
-	private static Cineplex filmgarde;
-	private static Cineplex ShawTheatres;
 	
 	public static void main(String args[]){
 		StartCineplex();
@@ -60,7 +56,8 @@ public class CineplexDatabase implements Database{
 				+ " Guided by his real-life mentor, Papa Rudy (Ben Kingsley), and aided by an unlikely band of international recruits,"
 				+ " Petit and his gang overcome long odds, betrayals, dissension and countless close calls to conceive and execute their mad plan.");
 		
-		AMKHub.AddMovie(theWalk);
+		
+		AMKHub.addMovie(theWalk);
 		/*****************************************JEM**************************************************************/
 		Cinema firstCinemaJem = new Cinema("Room1");
 		Cinema secondCinemaJem = new Cinema("Room2");
@@ -80,13 +77,13 @@ public class CineplexDatabase implements Database{
 				+ " In a rage, Kaulder managed to kill the all-powerful QUEEN WITCH and capture the mysterious source of her power, the Plague Box. "
 				+"However, in the moments before her death, the Queen cursed Kaulder with immortality. Forever separated from his beloved wife and daughter in the afterlife, "
 				+ "Kaulder has spent centuries hunting down rogue witches, all the while yearning for his long-lost loved ones."
-				+"Today, he is the only one of his kind—the last witch hunter. With the help of FATHER DOLAN, a Catholic priest, and a mystical arsenal hidden beneath New York’s St. "
-				+ "Patrick’s Cathedral, he continues to pursue the renegades and outlaws who endanger humanity. Chief among their adversaries is BELIAL,"
+				+"Today, he is the only one of his kindâ€”the last witch hunter. With the help of FATHER DOLAN, a Catholic priest, and a mystical arsenal hidden beneath New Yorkâ€™s St. "
+				+ "Patrickâ€™s Cathedral, he continues to pursue the renegades and outlaws who endanger humanity. Chief among their adversaries is BELIAL,"
 				+ " a powerful rebel witch who Kaulder believes has found the long-hidden Plague Box and is preparing to use it to destroy humankind and restore the witches to power."
 				+ " With the help of CHLOE, a goodhearted young witch, Kaulder sets out to stop Belial before he can recover the final element he needs to set his plan in motion. "
-				+ "But the item Belial seeks is hidden in the last place anyone has thought to look…and seeming friends are not at all what they seem.");
+				+ "But the item Belial seeks is hidden in the last place anyone has thought to lookâ€¦and seeming friends are not at all what they seem.");
 		
-		Jem.AddMovie(LastWitchHunter);
+		Jem.addMovie(LastWitchHunter);
 		
 		//implementation of the movie list will be added later by StaffApplication
 		
@@ -109,14 +106,12 @@ public class CineplexDatabase implements Database{
 		
 		CineplexDatabase cDatabase =  new CineplexDatabase();
 		System.out.println("size: "+listCineplex.size());
-		cDatabase.WriteToDatabase("CineplexDatabase.dat", listCineplex);
-		
-		ArrayList<Cineplex> listCineolex = cDatabase.ReadFromDatabase("CineplexDatabase.dat");
+		cDatabase.writeToDatabase("CineplexDatabase.dat", listCineplex);
 	
 	}
 	
 	@Override
-	public void WriteToDatabase(String filename, ArrayList list) {
+	public void writeToDatabase(String filename, ArrayList list) {
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
 		try{
@@ -131,7 +126,7 @@ public class CineplexDatabase implements Database{
 	}
 
 	@Override
-	public ArrayList<Cineplex> ReadFromDatabase(String filename) {
+	public ArrayList<Cineplex> readFromDatabase(String filename) {
 		ArrayList returnedList = null;
 		FileInputStream fis = null;
 		BufferedInputStream bis = null;
@@ -148,71 +143,4 @@ public class CineplexDatabase implements Database{
 		}
 		return returnedList;
 	}
-	
-
-	
-	/*
-	 * No need to see this
-	 * 
-	 * 
-	 public void ConfigureCineplexForStaff(){
-		Scanner scan = new Scanner(System.in);
-		int choiceCineplex =  0;
-		//we are using 3 cineplex from Singapore 
-		//Cathay Cineplex
-		//Filmgarde
-		//Century Cineplex
-		
-		System.out.println("\n Please Choose the cineplex to configure:");
-		System.out.println("1)Cathay Cineplex");
-		System.out.println("2)Filmgarde");
-		System.out.println("3)Century Cineplex");
-		choiceCineplex = scan.nextInt();
-		switch(choiceCineplex){
-		case 1:
-			System.out.println("Start Configuring Cathay Cineplex");
-			if(cathay != null) currentCineplex = cathay;
-			break;
-		case 2:
-			System.out.println("Start Configuring Filmgarde");
-			if(filmgarde != null) currentCineplex = filmgarde;
-			break;
-		case 3:
-			System.out.println("Start Configuring Century Cineplex");
-			if(century != null) currentCineplex = century;
-			
-			break;
-		default:try{
-			throw new ChoiceException("Please choose another cineplex");
-		}catch(ChoiceException e){
-		
-		}
-		}
-	}
-	public void ConfiguringCinema(){
-		System.out.println("Configuring cinema from "+this.nameCineplex);
-		for(int i = 1; i <= currentCineplex.listCinema.size() ; i++){
-			System.out.printf("%d) %s \n",i,listCinema.get(i-1).nameCinema);
-		}
-		System.out.println("please choose one Cinema to configure\n");
-		Scanner scan = new Scanner(System.in);
-		int indexCinema = scan.nextInt();
-		ConfiguringMovie(indexCinema-1);
-		
-	}
-	
-	private void ConfiguringMovie(int pos){
-		currentCinema = listCinema.get(pos);
-		System.out.println("Configuring movie from "+currentCinema.nameCinema);
-		for(int i = 0 ; i < currentCinema.getArrayMovie().size() ; i++){
-			System.out.printf("%d) %s",i+1,currentCinema.getArrayMovie().get(i).nameMovie);
-		}
-		System.out.println("Please choose one Movie to configure");
-		Scanner scan = new Scanner(System.in);
-		int choiceMovie = scan.nextInt();
-		currentMovie = currentCinema.getArrayMovie().get(choiceMovie);
-	}
-	*/
-
-
 }
