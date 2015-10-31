@@ -2,7 +2,6 @@ package Movie;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class Movie implements Serializable{
 	
@@ -182,7 +181,16 @@ public class Movie implements Serializable{
 		this.price = price;
 	}
 	
-	public double getPrice(){
+	public double getPrice(int ageGroup){
+		switch (ageGroup){
+		
+			case 1:
+			case 3:
+				price -= 2;
+				break;
+			default: break;
+		
+		}
 		return price;
 	}
 	
@@ -312,5 +320,4 @@ public class Movie implements Serializable{
 		return movieDescription;
 	}
 
-	//////////////////////////////////
 }
