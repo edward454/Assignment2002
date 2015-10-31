@@ -15,6 +15,7 @@ public class Customer implements Serializable{
 	private String emailAdd = "";
 	private String transactionId = "";
 	private int age;
+	private String seat;
 	
 	public Customer(String name, int phoneNumber, String emailAdd){
 		
@@ -76,6 +77,18 @@ public class Customer implements Serializable{
 	public int getAge(){
 		
 		return age;
+		
+	}
+	
+	public void assignSeat(String seat){
+		
+		this.seat = seat;
+		
+	}
+	
+	public String getSeat(){
+		
+		return seat;
 		
 	}
 	
