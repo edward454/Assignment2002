@@ -13,21 +13,44 @@ public class Cinema implements Serializable{
 	private String cinemaName = "";
 	private String type = ""; 
 	private ArrayList<Ticket> ticketList = new ArrayList<Ticket>();
-	private CinemaSeat[][] seat = new CinemaSeat[10][10];
+	private CinemaSeat[][] seatArray = new CinemaSeat[10][10];
 	private int emptySeatLeft;
-	private String teaterType;
+	private String theaterType;
 	
 	public static void main(String[] args) {
 		Cinema cinema = new Cinema("");
 		//debug to get the class type		
-		//Cinema cin = new Cinema("anything");		
-		//System.out.println(cin.getSeatArrangement());
+		Cinema cin = new Cinema();		
+		System.out.println(cin.getSeatArrangement());
 		
 	}
 	
-	public Cinema(String cinemaName , String teaterType){
+	public Cinema(){		
+		emptySeatLeft = 100;
+		for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 10; j++){
+				
+				seatArray[i][j] = new CinemaSeat(i + 1, j + 1, false);
+			}		
+			
+		}
+	}
+	
+	public Cinema(String cinemaName , String theaterType){
 		this.cinemaName = cinemaName;
-		this.teaterType = teaterType;
+		this.theaterType = theaterType;
+		
+		emptySeatLeft = 100;
+		for(int i = 0; i < 10; i++){
+			for(int j = 0; j < 10; j++){
+				
+				seatArray[i][j] = new CinemaSeat(i + 1, j + 1, false);
+				
+			}		
+			
+		}
+		
+		seatArray[0][0].setOccupied(true);
 		
 	}
 
@@ -38,7 +61,7 @@ public class Cinema implements Serializable{
 		for(int i = 0; i < 10; i++){
 			for(int j = 0; j < 10; j++){
 				
-				seat[i][j] = new CinemaSeat(i + 1, j + 1, false);
+				seatArray[i][j] = new CinemaSeat(i + 1, j + 1, false);
 				
 			}		
 			
@@ -57,8 +80,7 @@ public class Cinema implements Serializable{
 		return this.cinemaName;
 		
 	}
-		
-	
+			
 	public String getSeatArrangement(){
 		
 		String result = "";
@@ -72,11 +94,11 @@ public class Cinema implements Serializable{
 		result += "\n    ___________________________________________________________\n";
 				
 		for (row = 0; row < 10; row++){			
-			result += seat[row][column].getRow();
+			result += seatArray[row][column].getRow();
 			
 			for (int j = 0; j < 10; j++){
 				
-				if (seat[row][j].isOccupied())
+				if (seatArray[row][j].isOccupied())
 					result += "  |  X";					
 				else 
 					result += "  |   ";
@@ -104,6 +126,83 @@ public class Cinema implements Serializable{
 		
 	}
 	
+//	public String getSeat(){
+//		
+//		return seat.getSeatId();
+//		
+//	}
 	
+	public boolean requestSeat(String row, int column){
+		
+		switch(row){
+		
+			case "A": 				
+				if (seatArray[0][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[0][column -1].setOccupied(true);
+				break;
+			case "B": 
+				if (seatArray[1][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[1][column -1].setOccupied(true);
+				break;
+			case "C": 
+				if (seatArray[2][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[2][column -1].setOccupied(true);
+				break;
+			case "D": 
+				if (seatArray[3][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[3][column -1].setOccupied(true);
+				break;
+			case "E": 
+				if (seatArray[4][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[4][column -1].setOccupied(true);
+				break;
+			case "F": 
+				if (seatArray[5][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[5][column -1].setOccupied(true);
+				break;
+			case "G": 
+				if (seatArray[6][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[6][column -1].setOccupied(true);
+				break;
+			case "H": 
+				if (seatArray[7][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[7][column -1].setOccupied(true);
+				break;
+			case "I": 
+				if (seatArray[8][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[8][column -1].setOccupied(true);
+				break;
+			case "J": 
+				if (seatArray[9][column -1].isOccupied()){
+					return false;
+				}
+				seatArray[9][column -1].setOccupied(true);
+				break;
+				
+		
+		}
+		
+		
+		return true;
+		
+	}
 		
 }
