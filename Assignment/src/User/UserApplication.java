@@ -27,12 +27,15 @@ public class UserApplication implements Serializable{
 	private static CineplexDatabase userDatabase =  new CineplexDatabase();	
 	private static ArrayList <Cineplex> cineplexList = userDatabase.readFromDatabase("CineplexDatabase.dat");
 	private static Scanner sc = new Scanner(System.in);		
-	private static ArrayList <Movie> movieList = new ArrayList<Movie>();
+	private static ArrayList <Movie> movieListForSpecificCineplex = new ArrayList<Movie>();
+	private static ArrayList <Movie> movieListForAllCineplex = new ArrayList<Movie>();
 	private static Customer customer;
 	private static ArrayList<DateMovie> movieScheduleList = new ArrayList<DateMovie>();
 	private static Movie movieChosen = new Movie();
 	
-	public static void main(String[] args) {			
+	public static void main(String[] args) {	
+		
+		createMovieList();
 		
 		boolean carryOn = true;
 		
@@ -93,11 +96,11 @@ public class UserApplication implements Serializable{
 					if (customer.confirmCustomerInfo())
 						cineplexChoice = requestInput(CINEPLEX_INTERFACE);
 						
-					movieList = cineplexList.get(cineplexChoice - 1).getMovieList();
+					movieListForSpecificCineplex = cineplexList.get(cineplexChoice - 1).getMovieList();
 					
 					int movieChoice = requestInput(MOVIE_INTERFACE);					
 					
-					movieChosen = movieList.get(movieChoice - 1);
+					movieChosen = movieListForSpecificCineplex.get(movieChoice - 1);
 					
 					movieScheduleList = movieChosen.getArrayListOfDateMovie();
 					
@@ -201,16 +204,16 @@ public class UserApplication implements Serializable{
 			case MOVIE_INTERFACE:
 				System.out.println("Choose movie:");
 				
-				for (int i = 0; i < movieList.size(); i++){
+				for (int i = 0; i < movieListForSpecificCineplex.size(); i++){
 				
 					System.out.printf("%d) ", i + 1);
-					System.out.println(movieList.get(i).getTitle());
+					System.out.println(movieListForSpecificCineplex.get(i).getTitle());
 				
 				}
 				if (sc.hasNextInt()){
 					
 					int choice = sc.nextInt();
-					while (choice >= movieList.size() + 1){
+					while (choice >= movieListForSpecificCineplex.size() + 1){
 						
 						System.out.println("Invalid Option, choose again: ");
 						choice = sc.nextInt();
@@ -358,11 +361,11 @@ public class UserApplication implements Serializable{
 		
 		ArrayList<String> result = new ArrayList<String>();
 		
-		movieList = cineplex.getMovieList();
+		movieListForSpecificCineplex = cineplex.getMovieList();
 		
-		for(int i = 0; i < movieList.size(); i++){
+		for(int i = 0; i < movieListForSpecificCineplex.size(); i++){
 			Movie curMovie = new Movie();
-			curMovie = movieList.get(i);
+			curMovie = movieListForSpecificCineplex.get(i);
 			if((curMovie.getTitle().toLowerCase()).equals(title.toLowerCase())){
 				
 				result.add(cineplex.getCineplexName() + ":  " 
@@ -387,4 +390,35 @@ public class UserApplication implements Serializable{
 		
 	}
 		
+	private static void createMovieList(){
+		
+		for(int i = 0; i < cineplexList.size(); i++){
+			Cineplex currentCineplex = cineplexList.get(i);
+			for (int j = 0; j < currentCineplex.getMovieList().size(); j++){
+				int k = movieListForAllCineplex.size();
+				if(k > 0){
+					while(k > 0){					
+						
+						if(currentCineplex.getMovieList().get(j).getTitle().equals(movieListForAllCineplex.get(k-1).getTitle())){
+							
+							break;
+							
+						}
+						
+						k--;
+						
+					}
+				}
+				if(k == 0){
+				
+					movieListForAllCineplex.add(cineplexList.get(i).getMovieList().get(j));
+					System.out.println(cineplexList.get(i).getMovieList().get(j).getTitle());
+					
+				}
+				
+			}
+		}
+		
+	}
+	
 }
